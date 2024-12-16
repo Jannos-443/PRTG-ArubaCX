@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ValueLookup id="arubacx.vsx.state" desiredValue="1" undefinedState="Error">
+    <Lookups>
+	  <SingleInt state="Ok" value="-1">not configured</SingleInt>
+	  <SingleInt state="Ok" value="0">disabled</SingleInt>
+	  <SingleInt state="Ok" value="1">Ok</SingleInt>
+	  <SingleInt state="Error" value="2">error</SingleInt>
+    </Lookups>
+  </ValueLookup>

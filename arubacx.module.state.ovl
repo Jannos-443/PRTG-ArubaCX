@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ValueLookup id="arubacx.module.state" desiredValue="1" undefinedState="Error">
+    <Lookups>
+	  <SingleInt state="Ok" value="0">empty</SingleInt>
+	  <SingleInt state="Ok" value="1">ready</SingleInt>
+	  <SingleInt state="Warning" value="2">initializing</SingleInt>
+	  <SingleInt state="Warning" value="3">deinitializing</SingleInt>
+	  <SingleInt state="Error" value="4">down</SingleInt>
+    </Lookups>
+  </ValueLookup>

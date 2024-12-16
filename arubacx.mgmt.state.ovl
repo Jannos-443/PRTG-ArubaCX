@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ValueLookup id="arubacx.mgmt.state" desiredValue="2" undefinedState="Error">
+    <Lookups>
+	  <SingleInt state="Warning" value="0">Empty</SingleInt>
+	  <SingleInt state="Error" value="1">Error</SingleInt>
+	  <SingleInt state="Ok" value="2">Active</SingleInt>
+	  <SingleInt state="Ok" value="3">Standby</SingleInt>
+    </Lookups>
+  </ValueLookup>

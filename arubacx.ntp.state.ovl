@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ValueLookup id="arubacx.ntp.state" desiredValue="1" undefinedState="Error">
+    <Lookups>
+	  <SingleInt state="Error" value="0">disabled</SingleInt>
+	  <SingleInt state="Ok" value="1">enabled</SingleInt>
+    </Lookups>
+  </ValueLookup>

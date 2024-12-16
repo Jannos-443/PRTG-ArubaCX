@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ValueLookup id="arubacx.vsf.state" desiredValue="2" undefinedState="Error">
+    <Lookups>
+	  <SingleInt state="Ok" value="-1">not configured</SingleInt>
+	  <SingleInt state="Ok" value="0">disabled</SingleInt>
+	  <SingleInt state="Warning" value="1">chain</SingleInt>
+	  <SingleInt state="OK" value="2">ring</SingleInt>
+	  <SingleInt state="Error" value="3">split</SingleInt>
+    </Lookups>
+  </ValueLookup>

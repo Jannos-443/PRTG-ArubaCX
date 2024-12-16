@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ValueLookup id="arubacx.stp.state" desiredValue="1" undefinedState="Error">
+    <Lookups>
+      <SingleInt state="Ok" value="-1">not supported</SingleInt>
+	  <SingleInt state="Ok" value="0">disabled</SingleInt>
+	  <SingleInt state="Ok" value="1">mstp</SingleInt>
+	  <SingleInt state="Ok" value="2">rpvst</SingleInt>
+    </Lookups>
+  </ValueLookup>

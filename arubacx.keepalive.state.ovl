@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ValueLookup id="arubacx.keepalive.state" desiredValue="1" undefinedState="Error">
+    <Lookups>
+	  <SingleInt state="Ok" value="0">not supported</SingleInt>
+	  <SingleInt state="Ok" value="1">not configured</SingleInt>
+          <SingleInt state="Warning" value="2">init</SingleInt>
+	  <SingleInt state="Ok" value="3">established</SingleInt>
+	  <SingleInt state="Ok" value="4">configured</SingleInt>
+	  <SingleInt state="Error" value="5">failed</SingleInt>
+    </Lookups>
+  </ValueLookup>
