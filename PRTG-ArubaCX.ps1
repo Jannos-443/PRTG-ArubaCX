@@ -254,7 +254,19 @@ function Subsystems($data) {
         <LimitMinError>100</LimitMinError>
         </result>"
         }
+        else {
+            $xmlOutputText_temp += "No FAN found!"
+
+            $xmlOutput_temp += "<result>
+            <channel>FAN Health</channel>
+            <value>100</value>
+            <unit>Percent</unit>
+            <LimitMode>1</LimitMode>
+            <LimitMinError>100</LimitMinError>
+            </result>"
+        }
     }
+
     # PSU
     if ($ChannelPSU) {
         if ($All_PSUs.count -gt 0) {
@@ -276,6 +288,17 @@ function Subsystems($data) {
         <LimitMinError>100</LimitMinError>
         </result>"
         }
+        else {
+            $xmlOutputText_temp += "No PSU found!"
+
+            $xmlOutput_temp += "<result>
+        <channel>PSU Health</channel>
+        <value>100</value>
+        <unit>Percent</unit>
+        <LimitMode>1</LimitMode>
+        <LimitMinError>100</LimitMinError>
+        </result>"
+        }
     }
     # TEMP
     if ($ChannelTEMP) {
@@ -291,12 +314,12 @@ function Subsystems($data) {
 
             # add channel
             $xmlOutput_temp += "<result>
-        <channel>TEMP Health</channel>
-        <value>$($percentage)</value>
-        <unit>Percent</unit>
-        <LimitMode>1</LimitMode>
-        <LimitMinError>100</LimitMinError>
-        </result>"
+            <channel>TEMP Health</channel>
+            <value>$($percentage)</value>
+            <unit>Percent</unit>
+            <LimitMode>1</LimitMode>
+            <LimitMinError>100</LimitMinError>
+            </result>"
 
             $InletTempSensors = $All_TEMPs | Where-Object { $_.Value.name -match "Inlet-Air$" }
             if (($InletTempSensors | Measure-Object).count -gt 0) {
@@ -315,27 +338,38 @@ function Subsystems($data) {
             <float>1</float>
             </result>"
                 }
+
             }
-        }
-        $CPUTempSensors = $All_TEMPs | Where-Object { $_.Value.name -like "*CPU*" }
-        if (($CPUTempSensors | Measure-Object).count -gt 0) {
-            $MaxCpuTemp = 0
-            foreach ($CPUTempSensor in $CPUTempSensors) {
-                if ($CPUTempSensor.Value.temperature -gt $MaxCpuTemp) {
-                    $MaxCpuTemp = $CPUTempSensor.Value.temperature
+            $CPUTempSensors = $All_TEMPs | Where-Object { $_.Value.name -like "*CPU*" }
+            if (($CPUTempSensors | Measure-Object).count -gt 0) {
+                $MaxCpuTemp = 0
+                foreach ($CPUTempSensor in $CPUTempSensors) {
+                    if ($CPUTempSensor.Value.temperature -gt $MaxCpuTemp) {
+                        $MaxCpuTemp = $CPUTempSensor.Value.temperature
+                    }
+                }
+                $MaxCpuTemp = [math]::Round($MaxCpuTemp / 1000, 1)
+                if ($MaxCpuTemp -ne 0) {
+                    $xmlOutput_temp += "<result>
+                <channel>TEMP CPU</channel>
+                <value>$($MaxCpuTemp)</value>
+                <unit>Temperature</unit>
+                <float>1</float>
+                </result>"
                 }
             }
-            $MaxCpuTemp = [math]::Round($MaxCpuTemp / 1000, 1)
-            if ($MaxCpuTemp -ne 0) {
-                $xmlOutput_temp += "<result>
-            <channel>TEMP CPU</channel>
-            <value>$($MaxCpuTemp)</value>
-            <unit>Temperature</unit>
-            <float>1</float>
-            </result>"
-            }
         }
-        
+        else {
+            $xmlOutputText_temp += "No TEMP Sensors found!"
+
+            $xmlOutput_temp += "<result>
+        <channel>TEMP Health</channel>
+        <value>100</value>
+        <unit>Percent</unit>
+        <LimitMode>1</LimitMode>
+        <LimitMinError>100</LimitMinError>
+        </result>"
+        }        
     }
     #CPU AND RAM
     if ($ChannelSystem) {
@@ -417,11 +451,11 @@ function createTransceiverChannel([Object] $data) {
     if ($ChannelInterfaces) {
         if (-not $IncludeAdminDown) {
             #remove ports with AdminDown
-            $data = $data | Where-Object {(-not ($_.value.admin_state -eq "down"))}
+            $data = $data | Where-Object { (-not ($_.value.admin_state -eq "down")) }
 
             #LAG admin_state is always $null
             #LAG admin is $null if AdminDown and "up" if AdminUp
-            $data = $data | Where-Object {(-not (($null -eq $_.value.admin_state) -and ($null -eq $_.value.admin)))}
+            $data = $data | Where-Object { (-not (($null -eq $_.value.admin_state) -and ($null -eq $_.value.admin))) }
         }    
 
         $transceivers = 0
@@ -492,10 +526,10 @@ function createTransceiverChannel([Object] $data) {
             return
         }
 
-        if($total_errors -gt 0){
+        if ($total_errors -gt 0) {
             $xmlOutputText_temp += " || "
         }
-        else{
+        else {
             $xmlOutputText_temp = ""
         }
 
@@ -519,24 +553,24 @@ function GetInterfaces([Object] $data) {
         $interface_state_wrong = 0
         if (-not $IncludeAdminDown) {
             #remove ports with AdminDown
-            $data = $data | Where-Object {(-not ($_.value.admin_state -eq "down"))}
+            $data = $data | Where-Object { (-not ($_.value.admin_state -eq "down")) }
 
             #LAG admin_state is always $null
             #LAG admin is $null if AdminDown and "up" if AdminUp
-            $data = $data | Where-Object {(-not (($null -eq $_.value.admin_state) -and ($null -eq $_.value.admin)))}
+            $data = $data | Where-Object { (-not (($null -eq $_.value.admin_state) -and ($null -eq $_.value.admin))) }
         }
         $Interfaces_Count = ($data | Measure-Object).count
         foreach ($interface in $data) {
             $tempstate = "unknown?"
             # for normal interfaces link_state shows the state
-            if($null -ne $interface.value.link_state){
+            if ($null -ne $interface.value.link_state) {
                 $tempstate = $interface.value.link_state
             }
             # for lag interfaces bond_status.state shows the state
-            else{
+            else {
                 $tempstate = $interface.value.bond_status.state
             }
-            if ($tempstate -ne "up") {
+            if ($tempstate -ne $DesiredState) {
                 $xmlOutputText_temp += "Int `"$($interface.value.name)`" Desc `"$($interface.value.description)`" status `"$($tempstate)`" || "
                 $interface_state_wrong ++
             }
