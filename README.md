@@ -99,6 +99,13 @@ Show only PSU Channels
 ![Image](media/ArubaCX_PSU.png)
 <br>
 
+Show only TEMP Channels
+```powershell
+-Hostname "%host" -Username "%linuxuser" -Password "%linuxpassword" -ChannelTEMP
+```
+![Image](media/ArubaCX_TEMP.png)
+<br>
+
 Show only FAN Channels
 ```powershell
 -Hostname "%host" -Username "%linuxuser" -Password "%linuxpassword" -ChannelFAN
